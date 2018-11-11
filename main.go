@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
@@ -23,24 +24,24 @@ func LogFileSetup() {
 	log.SetFlags(log.Ldate | log.Ltime | log.Llongfile)
 }
 
-func HomeHandler(w http.ResponseWriter, r *http.Request){
-	w.Write([]byte("Individual project!"))
+func SignUpEndpoint(response http.ResponseWriter, request *http.Request){
+	response.Write([]byte("Individual project!"))
 }
 
 func main() {
 
 	LogFileSetup()
 
+
 	router := mux.NewRouter()
-	// Routes consist of a Path and Handler function
+	// CORS setup so that frontend can access this API
+	headers := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
+	methods := handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE"})
+	origins := handlers.AllowedOrigins([]string{"*"})
 
-	// Router to HomeHandler
-	router.HandleFunc("/", HomeHandler)
-
+	router.HandleFunc("/signup", SignUpEndpoint).Methods("POST")
+	//log server running
 	log.Printf("server running on port %v", 6000)
-	//Server start listen on port 6000
-	log.Fatal(http.ListenAndServe(":6000", nil))
-
-
+	log.Fatal(http.ListenAndServe(":6000", handlers.CORS(headers, methods, origins)(router)))
 
 }
