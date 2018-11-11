@@ -8,6 +8,12 @@ import (
 	"os"
 )
 
+type User struct {
+	Name string
+	Unique_ID int64
+	Phone_no string
+}
+
 func LogFileSetup() {
 	// create a new file if one doesn't exists and append data to this file when writing.
 	file, err := os.OpenFile("info.log", os.O_RDWR |os.O_CREATE|os.O_APPEND, 0666)
