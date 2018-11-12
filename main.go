@@ -3,17 +3,19 @@ package main
 import (
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	"gopkg.in/couchbase/gocb.v1"
 	"log"
 	"net/http"
 	"os"
 )
 
-type User struct {
+type Member struct {
 	FirstName string `json:"first_name,omitempty"`
 	LastName string	 `json:"last_name,omitempty"`
 	U_ID string		 `json:"unique_id,omitempty"`
 	Phone_No string	 `json:"phone_no,omitempty"`
 }
+
 
 func LogFileSetup() {
 	// create a new file if one doesn't exists and append data to this file when writing.
@@ -45,6 +47,27 @@ func SignUpEndpoint(response http.ResponseWriter, request *http.Request){
 func main() {
 
 	LogFileSetup()
+
+
+
+	cluster, errClust := gocb.Connect("couchbase://127.0.0.1:5984")
+	cluster.Authenticate(gocb.PasswordAuthenticator{
+		Username: "individualproject",
+		Password: "individualproject",
+	})
+	// throw error if there is a problem with opening the DB cluster
+	if errClust != nil {
+		log.Fatal(errClust)
+	}
+
+	// dereference cluster pointer
+	log.Printf("DataBase cluster setup at: %v", *cluster)
+
+	bucket, errBuc := cluster.OpenBucket("members", "")
+	if errBuc != nil {
+		log.Fatal(errBuc)
+	}
+	log.Printf("Bucket setup correctly at: %v", *bucket)
 
 
 	router := mux.NewRouter()
