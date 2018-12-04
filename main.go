@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 )
 
 type Member struct {
@@ -14,12 +15,16 @@ type Member struct {
 	LastName string	 `json:"last_name,omitempty"`
 	U_ID string		 `json:"unique_id,omitempty"`
 	Phone_No string	 `json:"phone_no,omitempty"`
+	Student_ID string `json: "stu_id, omitempty"`
 }
 
 
 func LogFileSetup() {
+	// Setting format and parsing current time in this format
+	currentTime := time.Now().Format(time.RFC1123)
+
 	// create a new file if one doesn't exists and append data to this file when writing.
-	file, err := os.OpenFile("info.log", os.O_RDWR |os.O_CREATE|os.O_APPEND, 0666)
+	file, err := os.OpenFile("info.log"+currentTime, os.O_RDWR |os.O_CREATE|os.O_APPEND, 0666)
 
 	// if there's an error with the opening of the log file log Fatal
 	if err != nil {
