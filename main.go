@@ -1,8 +1,14 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
+	"github.com/google/uuid"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+
+	//"github.com/gorilla/handlers"
+	//"github.com/gorilla/mux"
 	"gopkg.in/couchbase/gocb.v1"
 	"log"
 	"net/http"
@@ -53,12 +59,16 @@ func main() {
 
 	LogFileSetup()
 
+	//DB logger for Couchbase - prints to Command Line
+	gocb.SetLogger(gocb.DefaultStdioLogger())
 
 
-	cluster, errClust := gocb.Connect("couchbase://127.0.0.1:5984")
+	dbUsername := "admin"
+	dbPass := "admin1997"
+	cluster, errClust := gocb.Connect("couchbase://127.0.0.1")
 	cluster.Authenticate(gocb.PasswordAuthenticator{
-		Username: "individualproject",
-		Password: "individualproject",
+		Username: dbUsername,
+		Password: dbPass,
 	})
 	// throw error if there is a problem with opening the DB cluster
 	if errClust != nil {
@@ -68,7 +78,26 @@ func main() {
 	// dereference cluster pointer
 	log.Printf("DataBase cluster setup at: %v", *cluster)
 
-	bucket, errBuc := cluster.OpenBucket("members", "")
+	bucket, errBuc := cluster.OpenBucket("system", "")
+	bucket.Manager("", "").CreatePrimaryIndex("", true, false)
+
+	unique := uuid.New().String()
+	bucket.Upsert("u:ckent",
+				Member{
+					FirstName: "Clarke",
+					LastName: "Kent",
+					U_ID: unique,
+					Phone_No: "0858584848",
+					Student_ID: "adhs245",
+				}, 0)
+
+	// user
+	var member Member
+	bucket.Get("u:ckent", &member)
+	jsonBytes, _ := json.Marshal(member)
+	fmt.Println(string(jsonBytes))
+
+
 	if errBuc != nil {
 		log.Fatal(errBuc)
 	}
@@ -85,5 +114,6 @@ func main() {
 	//log server running
 	log.Printf("server running on port %v", 8080)
 	log.Fatal(http.ListenAndServe(":8080", handlers.CORS(headers, methods, origins)(router)))
+
 
 }
