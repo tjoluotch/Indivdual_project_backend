@@ -1,2 +1,0 @@
-2018/12/04 12:08:03 /Users/tjay/go/src/mygosource/ind_proj_backend/main.go:69: DataBase cluster setup at: {{individualproject individualproject} {gocb/v1.5.0 [127.0.0.1:5984] [] <nil>   <nil> <nil> false true false true true 0 0 0 0 0 0 60000000000 7000000000 100000000 0 0 0 0 0 0xc420140780 true true 0 0  } 75000000000 75000000000 75000000000 {{0 0} 0 0 0 0} map[] [] 0xc420095290}
-2018/12/04 12:08:03 /Users/tjay/go/src/mygosource/ind_proj_backend/main.go:73: failed to connect to any of the specified hosts

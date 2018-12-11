@@ -1,14 +1,8 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"github.com/google/uuid"
-	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
-
-	//"github.com/gorilla/handlers"
-	//"github.com/gorilla/mux"
 	"gopkg.in/couchbase/gocb.v1"
 	"log"
 	"net/http"
@@ -21,8 +15,12 @@ type Member struct {
 	LastName string	 `json:"last_name,omitempty"`
 	U_ID string		 `json:"unique_id,omitempty"`
 	Phone_No string	 `json:"phone_no,omitempty"`
-	Student_ID string `json: "stu_id, omitempty"`
+	Student_ID string `json: "student_id, omitempty"`
 }
+
+// Global variables to be able to use in each endpoint
+var bucket *gocb.Bucket
+var cluster *gocb.Cluster
 
 
 func LogFileSetup() {
@@ -44,15 +42,28 @@ func LogFileSetup() {
 	log.SetFlags(log.Ldate | log.Ltime | log.Llongfile)
 }
 
+func enableCORS(w *http.ResponseWriter, req *http.Request) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+	(*w).Header().Set("Access-Control-Allow-Credentials", "true")
+	(*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	(*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+}
+
 // Get the form data entered by client; FirstName, LastName, phone Number,
 // assign the person a unique i.d
 // check to see if that user isn't in the database already
 // if they are send an error message with the a  'bad' response code
 // if they aren't in db add to db and send a message with success
-func SignUpEndpoint(response http.ResponseWriter, request *http.Request){
-	log.Print("Entered func SignUpEndpoint")
-	log.Printf("Request: %v", request)
-	response.Write([]byte("Individual project!"))
+func CreateStudentAccountEndpoint(response http.ResponseWriter, request *http.Request){
+	/*
+	var member Member
+	var n1qlParams []interface{}
+	_ = json.NewDecoder(request.Body).Decode(&member)
+	query := gocb.NewN1qlQuery("INSERT INTO stu_prod_hub (KEY,VALUE) values ($1)")
+	*/
+	enableCORS(&response, request)
+	fmt.Println(request.Body)
+	fmt.Println("im in")
 }
 
 func main() {
@@ -62,7 +73,7 @@ func main() {
 	//DB logger for Couchbase - prints to Command Line
 	gocb.SetLogger(gocb.DefaultStdioLogger())
 
-
+	// Db access Layer
 	dbUsername := "admin"
 	dbPass := "admin1997"
 	cluster, errClust := gocb.Connect("couchbase://127.0.0.1")
@@ -72,48 +83,25 @@ func main() {
 	})
 	// throw error if there is a problem with opening the DB cluster
 	if errClust != nil {
-		log.Fatal(errClust)
+		log.Fatal("Error: Problem with setting up cluster:",errClust)
 	}
-
 	// dereference cluster pointer
 	log.Printf("DataBase cluster setup at: %v", *cluster)
 
-	bucket, errBuc := cluster.OpenBucket("system", "")
-	bucket.Manager("", "").CreatePrimaryIndex("", true, false)
-
-	unique := uuid.New().String()
-	bucket.Upsert("u:ckent",
-				Member{
-					FirstName: "Clarke",
-					LastName: "Kent",
-					U_ID: unique,
-					Phone_No: "0858584848",
-					Student_ID: "adhs245",
-				}, 0)
-
-	// user
-	var member Member
-	bucket.Get("u:ckent", &member)
-	jsonBytes, _ := json.Marshal(member)
-	fmt.Println(string(jsonBytes))
-
-
+	bucket, errBuc := cluster.OpenBucket("stu_prod_hub", "")
 	if errBuc != nil {
-		log.Fatal(errBuc)
+		log.Fatal("Error: Problem with DB Bucket",errBuc)
 	}
 	log.Printf("Bucket setup correctly at: %v", *bucket)
 
 
 	router := mux.NewRouter()
-	// CORS setup so that frontend can access this API
-	headers := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
-	methods := handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE"})
-	origins := handlers.AllowedOrigins([]string{"*"})
 
-	router.HandleFunc("/signup", SignUpEndpoint)
+
+	router.HandleFunc("/api/signup", CreateStudentAccountEndpoint).Methods("PUT")
 	//log server running
 	log.Printf("server running on port %v", 8080)
-	log.Fatal(http.ListenAndServe(":8080", handlers.CORS(headers, methods, origins)(router)))
+	log.Fatal(http.ListenAndServe(":8080", router))
 
 
 }

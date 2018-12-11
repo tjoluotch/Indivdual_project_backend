@@ -1,0 +1,2 @@
+2018/12/11 19:55:50 /Users/tjay/go/src/mygosource/ind_proj_backend/main.go:89: DataBase cluster setup at: {{admin admin1997} {gocb/v1.5.0 [127.0.0.1:11210] [127.0.0.1:8091] <nil>   <nil> <nil> false true false true true 0 0 0 0 0 0 60000000000 7000000000 100000000 0 0 0 0 0 0xc42015a780 true true 0 0  } 75000000000 75000000000 75000000000 {{0 0} 0 0 0 0} map[] [] 0xc42009f830}
+2018/12/11 19:55:50 /Users/tjay/go/src/mygosource/ind_proj_backend/main.go:93: Error: Problem with DB Bucketfailed to connect to any of the specified hosts
