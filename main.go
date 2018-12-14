@@ -1,26 +1,30 @@
 package main
 
 import (
+	"context"
+	"encoding/json"
 	"fmt"
+	"github.com/globalsign/mgo/bson"
 	"github.com/gorilla/mux"
-	"gopkg.in/couchbase/gocb.v1"
+	"github.com/mongodb/mongo-go-driver/mongo"
+	"github.com/satori/go.uuid"
 	"log"
 	"net/http"
 	"os"
 	"time"
 )
 
-type Member struct {
+type Student struct {
 	FirstName string `json:"first_name,omitempty"`
 	LastName string	 `json:"last_name,omitempty"`
-	U_ID string		 `json:"unique_id,omitempty"`
 	Phone_No string	 `json:"phone_no,omitempty"`
-	Student_ID string `json: "student_id, omitempty"`
+	Student_ID string `json:"student_id,omitempty"`
+	Unique_ID string `json:"unique_id,omitempty"`
 }
 
 // Global variables to be able to use in each endpoint
-var bucket *gocb.Bucket
-var cluster *gocb.Cluster
+var client *mongo.Client
+const dbName string = "Studently"
 
 
 func LogFileSetup() {
@@ -42,9 +46,9 @@ func LogFileSetup() {
 	log.SetFlags(log.Ldate | log.Ltime | log.Llongfile)
 }
 
-func enableCORS(w *http.ResponseWriter, req *http.Request) {
+func enableCORS(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
-	(*w).Header().Set("Access-Control-Allow-Credentials", "true")
+	//(*w).Header().Set("Access-Control-Allow-Credentials", "true")
 	(*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	(*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
 }
@@ -55,53 +59,79 @@ func enableCORS(w *http.ResponseWriter, req *http.Request) {
 // if they are send an error message with the a  'bad' response code
 // if they aren't in db add to db and send a message with success
 func CreateStudentAccountEndpoint(response http.ResponseWriter, request *http.Request){
-	/*
-	var member Member
-	var n1qlParams []interface{}
-	_ = json.NewDecoder(request.Body).Decode(&member)
-	query := gocb.NewN1qlQuery("INSERT INTO stu_prod_hub (KEY,VALUE) values ($1)")
-	*/
-	enableCORS(&response, request)
-	fmt.Println(request.Body)
-	fmt.Println("im in")
+	enableCORS(&response)
+
+	client, err := mongo.NewClient("mongodb://localhost:27017")
+	if err != nil {
+		log.Fatalf("Error connecting to mongoDB client Host: Err-> %v\n ", err)
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+	defer cancel()
+	err = client.Connect(ctx)
+	if err != nil {
+		log.Fatalf("Error Connecting to MongoDB at context.WtihTimeout: Err-> %v\n ", err)
+	}
+
+
+	response.Header().Set("Content-Type", "application/json")
+	var student Student
+	// decoding JSON post data to
+	decoder := json.NewDecoder(request.Body)
+	err = decoder.Decode(&student)
+	//if there was an error panic
+	if err != nil {
+		panic(err)
+	}
+	// save unique id to student
+	unId, _ := uuid.NewV4()
+	idString := unId.String()
+	student.Unique_ID = idString
+	//print student to console
+	fmt.Println(&student)
+	//encode student into BSON
+	data, err := bson.Marshal(student)
+	if err != nil {
+		log.Fatalf("Problem encoding Student struct into BSON: Err-> %v\n ",err)
+	}
+	studentCollection := client.Database(dbName).Collection("students")
+	_, err = studentCollection.InsertOne(context.Background(),data)
+	if err != nil {
+		response.WriteHeader(501)
+		response.Write([]byte(`{ "message": "` + err.Error() + `" }`))
+	}
+	//id := res.InsertedID
+
+	response.Write([]byte("saved"))
 }
+
+
 
 func main() {
 
 	LogFileSetup()
 
-	//DB logger for Couchbase - prints to Command Line
-	gocb.SetLogger(gocb.DefaultStdioLogger())
-
-	// Db access Layer
-	dbUsername := "admin"
-	dbPass := "admin1997"
-	cluster, errClust := gocb.Connect("couchbase://127.0.0.1")
-	cluster.Authenticate(gocb.PasswordAuthenticator{
-		Username: dbUsername,
-		Password: dbPass,
-	})
-	// throw error if there is a problem with opening the DB cluster
-	if errClust != nil {
-		log.Fatal("Error: Problem with setting up cluster:",errClust)
+	/*
+	client, err := mongo.NewClient("mongodb://localhost:27017")
+	if err != nil {
+		log.Fatalf("Error connecting to mongoDB client Host: Err-> %v\n ", err)
 	}
-	// dereference cluster pointer
-	log.Printf("DataBase cluster setup at: %v", *cluster)
-
-	bucket, errBuc := cluster.OpenBucket("stu_prod_hub", "")
-	if errBuc != nil {
-		log.Fatal("Error: Problem with DB Bucket",errBuc)
+	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+	defer cancel()
+	err = client.Connect(ctx)
+	if err != nil {
+		log.Fatalf("Error Connecting to MongoDB at context.WtihTimeout: Err-> %v\n ", err)
 	}
-	log.Printf("Bucket setup correctly at: %v", *bucket)
+	*/
+
 
 
 	router := mux.NewRouter()
 
 
-	router.HandleFunc("/api/signup", CreateStudentAccountEndpoint).Methods("PUT")
+	router.HandleFunc("/signup", CreateStudentAccountEndpoint).Methods("POST")
 	//log server running
-	log.Printf("server running on port %v", 8080)
-	log.Fatal(http.ListenAndServe(":8080", router))
+	log.Printf("server running on port %v", 12345)
+	log.Fatal(http.ListenAndServe(":12345",router))
 
 
 }

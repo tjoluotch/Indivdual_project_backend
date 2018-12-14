@@ -1,0 +1,45 @@
+2018/12/14 03:03:24 /Users/tjay/go/src/mygosource/ind_proj_backend/main.go:117: server running on port 12345
+2018/12/14 03:04:02 /usr/local/go/src/net/http/server.go:2923: http: panic serving [::1]:53464: runtime error: invalid memory address or nil pointer dereference
+goroutine 55 [running]:
+net/http.(*conn).serve.func1(0xc4202320a0)
+	/usr/local/go/src/net/http/server.go:1726 +0xd0
+panic(0x14efcc0, 0x18cdec0)
+	/usr/local/go/src/runtime/panic.go:505 +0x229
+github.com/mongodb/mongo-go-driver/mongo.newDatabase(0x0, 0x1575807, 0x9, 0x0, 0x0, 0x0, 0x0)
+	/Users/tjay/go/src/github.com/mongodb/mongo-go-driver/mongo/database.go:38 +0x5c
+github.com/mongodb/mongo-go-driver/mongo.(*Client).Database(0x0, 0x1575807, 0x9, 0x0, 0x0, 0x0, 0x0)
+	/Users/tjay/go/src/github.com/mongodb/mongo-go-driver/mongo/client.go:319 +0x5d
+main.CreateStudentAccountEndpoint(0x1674b80, 0xc420250000, 0xc420254100)
+	/Users/tjay/go/src/mygosource/ind_proj_backend/main.go:84 +0x317
+net/http.HandlerFunc.ServeHTTP(0x15902c8, 0x1674b80, 0xc420250000, 0xc420254100)
+	/usr/local/go/src/net/http/server.go:1947 +0x44
+github.com/gorilla/mux.(*Router).ServeHTTP(0xc420148230, 0x1674b80, 0xc420250000, 0xc420254100)
+	/Users/tjay/go/src/github.com/gorilla/mux/mux.go:159 +0xed
+net/http.serverHandler.ServeHTTP(0xc42018a410, 0x1674b80, 0xc420250000, 0xc420236200)
+	/usr/local/go/src/net/http/server.go:2694 +0xbc
+net/http.(*conn).serve(0xc4202320a0, 0x1675140, 0xc4201d83c0)
+	/usr/local/go/src/net/http/server.go:1830 +0x651
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:2795 +0x27b
+2018/12/14 03:04:17 /usr/local/go/src/net/http/server.go:2923: http: panic serving [::1]:53470: runtime error: invalid memory address or nil pointer dereference
+goroutine 39 [running]:
+net/http.(*conn).serve.func1(0xc4202840a0)
+	/usr/local/go/src/net/http/server.go:1726 +0xd0
+panic(0x14efcc0, 0x18cdec0)
+	/usr/local/go/src/runtime/panic.go:505 +0x229
+github.com/mongodb/mongo-go-driver/mongo.newDatabase(0x0, 0x1575807, 0x9, 0x0, 0x0, 0x0, 0x0)
+	/Users/tjay/go/src/github.com/mongodb/mongo-go-driver/mongo/database.go:38 +0x5c
+github.com/mongodb/mongo-go-driver/mongo.(*Client).Database(0x0, 0x1575807, 0x9, 0x0, 0x0, 0x0, 0x0)
+	/Users/tjay/go/src/github.com/mongodb/mongo-go-driver/mongo/client.go:319 +0x5d
+main.CreateStudentAccountEndpoint(0x1674b80, 0xc4202500e0, 0xc420254500)
+	/Users/tjay/go/src/mygosource/ind_proj_backend/main.go:84 +0x317
+net/http.HandlerFunc.ServeHTTP(0x15902c8, 0x1674b80, 0xc4202500e0, 0xc420254500)
+	/usr/local/go/src/net/http/server.go:1947 +0x44
+github.com/gorilla/mux.(*Router).ServeHTTP(0xc420148230, 0x1674b80, 0xc4202500e0, 0xc420254500)
+	/Users/tjay/go/src/github.com/gorilla/mux/mux.go:159 +0xed
+net/http.serverHandler.ServeHTTP(0xc42018a410, 0x1674b80, 0xc4202500e0, 0xc420254300)
+	/usr/local/go/src/net/http/server.go:2694 +0xbc
+net/http.(*conn).serve(0xc4202840a0, 0x1675140, 0xc420194540)
+	/usr/local/go/src/net/http/server.go:1830 +0x651
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:2795 +0x27b
