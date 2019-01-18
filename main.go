@@ -46,12 +46,7 @@ func LogFileSetup() {
 	log.SetFlags(log.Ldate | log.Ltime | log.Llongfile)
 }
 
-func enableCORS(w *http.ResponseWriter) {
-	(*w).Header().Set("Access-Control-Allow-Origin", "*")
-	//(*w).Header().Set("Access-Control-Allow-Credentials", "true")
-	(*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-	(*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
-}
+
 
 // Get the form data entered by client; FirstName, LastName, phone Number,
 // assign the person a unique i.d
@@ -59,7 +54,11 @@ func enableCORS(w *http.ResponseWriter) {
 // if they are send an error message with the a  'bad' response code
 // if they aren't in db add to db and send a message with success
 func CreateStudentAccountEndpoint(response http.ResponseWriter, request *http.Request){
-	enableCORS(&response)
+
+	//CORS
+	response.Header().Set("Access-Control-Allow-Origin", "*")
+	response.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	response.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
 
 	client, err := mongo.NewClient("mongodb://localhost:27017")
 	if err != nil {
@@ -99,9 +98,13 @@ func CreateStudentAccountEndpoint(response http.ResponseWriter, request *http.Re
 		response.WriteHeader(501)
 		response.Write([]byte(`{ "message": "` + err.Error() + `" }`))
 	}
-	//id := res.InsertedID
+	// encoding json object for returning to the client
+	jsonStudent, err := json.Marshal(student)
+	if err != nil {
+		http.Error(response, err.Error(), http.StatusInternalServerError)
+	}
 
-	response.Write([]byte("saved"))
+	response.Write(jsonStudent)
 }
 
 
@@ -128,7 +131,7 @@ func main() {
 	router := mux.NewRouter()
 
 
-	router.HandleFunc("/signup", CreateStudentAccountEndpoint).Methods("POST")
+	router.HandleFunc("/api/signup", CreateStudentAccountEndpoint).Methods("POST")
 	//log server running
 	log.Printf("server running on port %v", 12345)
 	log.Fatal(http.ListenAndServe(":12345",router))
