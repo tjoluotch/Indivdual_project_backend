@@ -107,6 +107,60 @@ func CreateStudentAccountEndpoint(response http.ResponseWriter, request *http.Re
 	response.Write(jsonStudent)
 }
 
+func CreateJwtokenEndpoint(response http.ResponseWriter, request *http.Request){
+	//CORS
+	response.Header().Set("Access-Control-Allow-Origin", "*")
+	response.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	response.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+
+	// step 1 authenticate user
+
+	client, err := mongo.NewClient("mongodb://localhost:27017")
+	if err != nil {
+		log.Fatalf("Error connecting to mongoDB client Host: Err-> %v\n ", err)
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+	defer cancel()
+	err = client.Connect(ctx)
+	if err != nil {
+		log.Fatalf("Error Connecting to MongoDB at context.WtihTimeout: Err-> %v\n ", err)
+	}
+
+	response.Header().Set("Content-Type", "application/json")
+
+	var student Student
+	// decoding JSON post data to student
+	decoder := json.NewDecoder(request.Body)
+	err = decoder.Decode(&student)
+	//if there was an error panic
+	if err != nil {
+		panic(err)
+	}
+
+	//encode student into BSON
+	data, err := bson.Marshal(student)
+	if err != nil {
+		log.Fatalf("Problem encoding Student struct into BSON: Err-> %v\n ",err)
+	}
+	studentCollection := client.Database(dbName).Collection("students")
+	//find a particular student from the data received
+	result := studentCollection.FindOne(context.Background(), data)
+	var studentFound Student
+	// decode that student into Student struct
+	err = result.Decode(&studentFound)
+	if err != nil {
+		http.Error(response, err.Error(), http.StatusInternalServerError)
+	}
+
+	// encoding json object for returning to the client
+	jsonStudent, err := json.Marshal(studentFound)
+	if err != nil {
+		http.Error(response, err.Error(), http.StatusInternalServerError)
+	}
+	
+	response.Write(jsonStudent)
+}
+
 
 
 func main() {
@@ -132,6 +186,7 @@ func main() {
 
 
 	router.HandleFunc("/api/signup", CreateStudentAccountEndpoint).Methods("POST")
+	router.HandleFunc("/api/authenticate", )
 	//log server running
 	log.Printf("server running on port %v", 12345)
 	log.Fatal(http.ListenAndServe(":12345",router))
