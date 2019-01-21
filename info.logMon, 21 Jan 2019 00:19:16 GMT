@@ -1,0 +1,2 @@
+2019/01/21 00:19:16 /Users/tjay/go/src/mygosource/ind_proj_backend/main.go:201: server running on port 12345
+2019/01/21 00:19:16 /Users/tjay/go/src/mygosource/ind_proj_backend/main.go:202: listen tcp :12345: bind: address already in use

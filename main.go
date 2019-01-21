@@ -4,8 +4,9 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/globalsign/mgo/bson"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/mux"
+	"github.com/mongodb/mongo-go-driver/bson"
 	"github.com/mongodb/mongo-go-driver/mongo"
 	"github.com/satori/go.uuid"
 	"log"
@@ -20,6 +21,10 @@ type Student struct {
 	Phone_No string	 `json:"phone_no,omitempty"`
 	Student_ID string `json:"student_id,omitempty"`
 	Unique_ID string `json:"unique_id,omitempty"`
+}
+
+type JwToken struct {
+	Token string `json:"token,omitempty"`
 }
 
 // Global variables to be able to use in each endpoint
@@ -128,6 +133,9 @@ func CreateJwtokenEndpoint(response http.ResponseWriter, request *http.Request){
 
 	response.Header().Set("Content-Type", "application/json")
 
+	x := request.URL.Query()
+	fmt.Println(x)
+
 	var student Student
 	// decoding JSON post data to student
 	decoder := json.NewDecoder(request.Body)
@@ -137,28 +145,43 @@ func CreateJwtokenEndpoint(response http.ResponseWriter, request *http.Request){
 		panic(err)
 	}
 
-	//encode student into BSON
-	data, err := bson.Marshal(student)
-	if err != nil {
-		log.Fatalf("Problem encoding Student struct into BSON: Err-> %v\n ",err)
-	}
+	// Create search parameter of student id in bson format
+	searchParams := "student_id"
+	filter := bson.D{{searchParams, student.Student_ID}}
+
 	studentCollection := client.Database(dbName).Collection("students")
-	//find a particular student from the data received
-	result := studentCollection.FindOne(context.Background(), data)
+	//find a particular student using student id
+	result := studentCollection.FindOne(context.Background(), filter)
 	var studentFound Student
 	// decode that student into Student struct
 	err = result.Decode(&studentFound)
+	// user does not exist is return to client
+	if err != nil {
+		http.Error(response, "User does not exist ", http.StatusInternalServerError)
+		return
+	}
+
+	// encoding json object for returning to the client
+	//jsonStudent, err := json.Marshal(&studentFound)
 	if err != nil {
 		http.Error(response, err.Error(), http.StatusInternalServerError)
 	}
 
-	// encoding json object for returning to the client
-	jsonStudent, err := json.Marshal(studentFound)
+	// step 2 create a jwt from student found
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"first_name": studentFound.FirstName,
+		"last_name": studentFound.LastName,
+		"phone_no": studentFound.Phone_No,
+		"student_id": studentFound.Student_ID,
+		"unique_id": studentFound.Unique_ID,
+	})
+
+	tokenString, err := token.SignedString([]byte("secret"))
 	if err != nil {
-		http.Error(response, err.Error(), http.StatusInternalServerError)
+		http.Error(response, "Issue with JWT creation: Error message -> " + err.Error(), http.StatusInternalServerError)
 	}
-	
-	response.Write(jsonStudent)
+	json.NewEncoder(response).Encode(JwToken{Token: tokenString})
+	//response.Write(jsonStudent)
 }
 
 
@@ -186,7 +209,7 @@ func main() {
 
 
 	router.HandleFunc("/api/signup", CreateStudentAccountEndpoint).Methods("POST")
-	router.HandleFunc("/api/authenticate", )
+	router.HandleFunc("/api/authenticate", CreateJwtokenEndpoint).Methods("POST")
 	//log server running
 	log.Printf("server running on port %v", 12345)
 	log.Fatal(http.ListenAndServe(":12345",router))
