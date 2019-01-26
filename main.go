@@ -9,6 +9,7 @@ import (
 	"github.com/mongodb/mongo-go-driver/bson"
 	"github.com/mongodb/mongo-go-driver/mongo"
 	"github.com/satori/go.uuid"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -27,9 +28,24 @@ type JwToken struct {
 	Token string `json:"token,omitempty"`
 }
 
+type CustomsClaimsStudent struct {
+	FirstName string `json:"first_name"`
+	Student_ID string `json:"student_id"`
+	Unique_ID string `json:"unique_id"`
+	jwt.StandardClaims
+}
+
 // Global variables to be able to use in each endpoint
 var client *mongo.Client
-const dbName string = "Studently"
+
+const(
+	dbName string = "Studently"
+	privKeyPath string = "keys/app.rsa"
+	pubKeyPath string = "keys/app.rsa.pub"
+)
+
+var VerifyKey, SignKey []byte
+
 
 
 func LogFileSetup() {
@@ -49,6 +65,22 @@ func LogFileSetup() {
 	log.SetOutput(file)
 	// log with date time and file location
 	log.SetFlags(log.Ldate | log.Ltime | log.Llongfile)
+}
+
+func initKeys() {
+	var err error
+
+	SignKey, err = ioutil.ReadFile(privKeyPath)
+	if err != nil {
+		log.Fatal("Error reading Private Key")
+		return
+	}
+
+	VerifyKey, err = ioutil.ReadFile(pubKeyPath)
+	if err != nil {
+		log.Fatal("Error reading Public Key")
+		return
+	}
 }
 
 
@@ -120,6 +152,7 @@ func CreateJwtokenEndpoint(response http.ResponseWriter, request *http.Request){
 
 	// step 1 authenticate user
 
+	// Db opening section
 	client, err := mongo.NewClient("mongodb://localhost:27017")
 	if err != nil {
 		log.Fatalf("Error connecting to mongoDB client Host: Err-> %v\n ", err)
@@ -131,6 +164,7 @@ func CreateJwtokenEndpoint(response http.ResponseWriter, request *http.Request){
 		log.Fatalf("Error Connecting to MongoDB at context.WtihTimeout: Err-> %v\n ", err)
 	}
 
+	// set response header
 	response.Header().Set("Content-Type", "application/json")
 
 
@@ -166,15 +200,19 @@ func CreateJwtokenEndpoint(response http.ResponseWriter, request *http.Request){
 	}
 
 	// step 2 create a jwt from student found
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"first_name": studentFound.FirstName,
-		"last_name": studentFound.LastName,
-		"phone_no": studentFound.Phone_No,
-		"student_id": studentFound.Student_ID,
-		"unique_id": studentFound.Unique_ID,
-	})
+	claims := CustomsClaimsStudent{
+		studentFound.FirstName,
+		studentFound.Student_ID,
+		studentFound.Unique_ID,
+		jwt.StandardClaims{
+			Issuer: "golang api",
+			ExpiresAt: time.Now().Add(time.Hour * 3).Unix(),
+		},
+	}
+	mySigningKey := []byte("secret")
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	tokenString, err := token.SignedString([]byte("secret"))
+	tokenString, err := token.SignedString(mySigningKey)
 	if err != nil {
 		http.Error(response, "Issue with JWT creation: Error message -> " + err.Error(), http.StatusInternalServerError)
 	}
@@ -189,22 +227,7 @@ func CreateJwtokenEndpoint(response http.ResponseWriter, request *http.Request){
 func main() {
 
 	LogFileSetup()
-
-	/*
-	client, err := mongo.NewClient("mongodb://localhost:27017")
-	if err != nil {
-		log.Fatalf("Error connecting to mongoDB client Host: Err-> %v\n ", err)
-	}
-	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
-	defer cancel()
-	err = client.Connect(ctx)
-	if err != nil {
-		log.Fatalf("Error Connecting to MongoDB at context.WtihTimeout: Err-> %v\n ", err)
-	}
-	*/
-
-
-
+	initKeys()
 	router := mux.NewRouter()
 
 
