@@ -133,8 +133,6 @@ func CreateJwtokenEndpoint(response http.ResponseWriter, request *http.Request){
 
 	response.Header().Set("Content-Type", "application/json")
 
-	x := request.URL.Query()
-	fmt.Println(x)
 
 	var student Student
 	// decoding JSON post data to student
@@ -180,6 +178,8 @@ func CreateJwtokenEndpoint(response http.ResponseWriter, request *http.Request){
 	if err != nil {
 		http.Error(response, "Issue with JWT creation: Error message -> " + err.Error(), http.StatusInternalServerError)
 	}
+
+	response.Header().Add("Authorization", tokenString)
 	json.NewEncoder(response).Encode(JwToken{Token: tokenString})
 	//response.Write(jsonStudent)
 }
