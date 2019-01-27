@@ -206,7 +206,7 @@ func CreateJwtokenEndpoint(response http.ResponseWriter, request *http.Request){
 		studentFound.Unique_ID,
 		jwt.StandardClaims{
 			Issuer: "golang api",
-			ExpiresAt: time.Now().Add(time.Hour * 3).Unix(),
+			ExpiresAt: time.Now().Add(time.Hour * 12).Unix(),
 		},
 	}
 	mySigningKey := []byte("secret")
@@ -217,7 +217,7 @@ func CreateJwtokenEndpoint(response http.ResponseWriter, request *http.Request){
 		http.Error(response, "Issue with JWT creation: Error message -> " + err.Error(), http.StatusInternalServerError)
 	}
 
-	response.Header().Add("Authorization", tokenString)
+	response.Header().Add("Authorization", "Bearer " + tokenString)
 	json.NewEncoder(response).Encode(JwToken{Token: tokenString})
 	//response.Write(jsonStudent)
 }
