@@ -193,14 +193,14 @@ func CreateJwtokenEndpoint(response http.ResponseWriter, request *http.Request){
 	err = result.Decode(&studentFound)
 	// user does not exist is return to client
 	if err != nil {
-		http.Error(response, "User does not exist ", http.StatusInternalServerError)
+		http.Error(response, "User does not exist ", http.StatusBadRequest)
 		return
 	}
 
 	// encoding json object for returning to the client
 	//jsonStudent, err := json.Marshal(&studentFound)
 	if err != nil {
-		http.Error(response, err.Error(), http.StatusInternalServerError)
+		http.Error(response, err.Error(), http.StatusBadRequest)
 		return
 	}
 
@@ -233,7 +233,8 @@ func CreateJwtokenEndpoint(response http.ResponseWriter, request *http.Request){
 
 	tokenString, err := token.SignedString(mySigningKey)
 	if err != nil {
-		http.Error(response, "Issue with JWT creation: Error message -> " + err.Error(), http.StatusInternalServerError)
+		http.Error(response, "Issue with JWT creation: Error message -> " + err.Error(), http.StatusBadRequest)
+		return
 	}
 
 	response.Header().Add("Authorization", "Bearer " + tokenString)
