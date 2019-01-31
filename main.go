@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/mux"
@@ -11,8 +12,11 @@ import (
 	"github.com/satori/go.uuid"
 	"io/ioutil"
 	"log"
+	"math/rand"
 	"net/http"
+	"net/url"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -197,6 +201,7 @@ func CreateJwtokenEndpoint(response http.ResponseWriter, request *http.Request){
 	//jsonStudent, err := json.Marshal(&studentFound)
 	if err != nil {
 		http.Error(response, err.Error(), http.StatusInternalServerError)
+		return
 	}
 
 	// step 2 create a jwt from student found
@@ -209,7 +214,21 @@ func CreateJwtokenEndpoint(response http.ResponseWriter, request *http.Request){
 			ExpiresAt: time.Now().Add(time.Hour * 12).Unix(),
 		},
 	}
-	mySigningKey := []byte("secret")
+
+	//generate randomm 6 digit int to be used as secret
+	rand.Seed(time.Now().Unix())
+	randInt := rand.Intn(999999)
+	randCode:= string(randInt)
+	fmt.Println("Random Code for signing key ",randInt)
+
+	// twillio message sent for auth
+	err = sendTwillioMessage(randCode, studentFound.Phone_No)
+	if err != nil {
+		http.Error(response, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	mySigningKey := []byte(randCode)
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
 	tokenString, err := token.SignedString(mySigningKey)
@@ -222,7 +241,48 @@ func CreateJwtokenEndpoint(response http.ResponseWriter, request *http.Request){
 	//response.Write(jsonStudent)
 }
 
+func sendTwillioMessage(code, phone_no string) error {
 
+	// Set account keys & information
+	accountSid := "AC32cd443ee4fc285c6a8d1b30805ae462"
+	authToken := "8342021b04ecfd7990cfe31807ab56f4"
+	urlStr := "https://api.twilio.com/2010-04-01/Accounts/" + accountSid + "/Messages.json"
+
+	twillioNo := "+447480534149"
+
+	loginMessage := "Thanks for using Studently, please enter this Code: " + code
+
+	// Pack up the data for the message
+	msgData := url.Values{}
+	msgData.Set("To", phone_no)
+	msgData.Set("From", twillioNo)
+	msgData.Set("Body", loginMessage)
+	msgDataReader := *strings.NewReader(msgData.Encode())
+
+	// Create HTTP request client
+	client := &http.Client{}
+	req, _ := http.NewRequest("POST", urlStr, &msgDataReader)
+	req.SetBasicAuth(accountSid, authToken)
+	req.Header.Add("Accept", "application/json")
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+
+	// Make HTTP POST request and return message SID
+	resp, _ := client.Do(req)
+	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
+		var data map[string]interface{}
+		decoder := json.NewDecoder(resp.Body)
+		err := decoder.Decode(&data)
+		if err == nil {
+			fmt.Println(data["sid"])
+			return err
+		}
+	} else {
+		fmt.Println(resp.Status)
+		err := errors.New("twillio didn't execute the SMS")
+		return err
+	}
+	return nil
+}
 
 func main() {
 
@@ -233,6 +293,10 @@ func main() {
 
 	router.HandleFunc("/api/signup", CreateStudentAccountEndpoint).Methods("POST")
 	router.HandleFunc("/api/authenticate", CreateJwtokenEndpoint).Methods("POST")
+
+	//add a new route that gets the password as input along with the jwt from local storage and uses this to unlock this.
+	// if JWT is decoded send back 200 along with the student object if JWT is not decoded send back 400
+
 	//log server running
 	log.Printf("server running on port %v", 12345)
 	log.Fatal(http.ListenAndServe(":12345",router))
