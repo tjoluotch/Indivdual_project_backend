@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/mux"
+	"github.com/mitchellh/mapstructure"
 	"github.com/mongodb/mongo-go-driver/bson"
 	"github.com/mongodb/mongo-go-driver/mongo"
 	"github.com/satori/go.uuid"
@@ -16,6 +17,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -37,6 +39,10 @@ type CustomsClaimsStudent struct {
 	Student_ID string `json:"student_id"`
 	Unique_ID string `json:"unique_id"`
 	jwt.StandardClaims
+}
+
+type PhoneCode struct {
+	Code string `json:"phoneCode"`
 }
 
 // Global variables to be able to use in each endpoint
@@ -218,7 +224,7 @@ func CreateJwtokenEndpoint(response http.ResponseWriter, request *http.Request){
 	//generate randomm 6 digit int to be used as secret
 	rand.Seed(time.Now().Unix())
 	randInt := rand.Intn(999999)
-	randCode:= string(randInt)
+	randCode:= strconv.Itoa(randInt)
 	fmt.Println("Random Code for signing key ",randInt)
 
 	// twillio message sent for auth
@@ -237,9 +243,9 @@ func CreateJwtokenEndpoint(response http.ResponseWriter, request *http.Request){
 		return
 	}
 
-	response.Header().Add("Authorization", "Bearer " + tokenString)
+	//response.Header().Add("Authorization", "Bearer " + tokenString)
 	json.NewEncoder(response).Encode(JwToken{Token: tokenString})
-	//response.Write(jsonStudent)
+	//response.Write([]byte("Token sent, Login successful"))
 }
 
 func sendTwillioMessage(code, phone_no string) error {
@@ -285,6 +291,42 @@ func sendTwillioMessage(code, phone_no string) error {
 	return nil
 }
 
+func CheckMobileCode(response http.ResponseWriter, request *http.Request) {
+	var phoneCode PhoneCode
+	auth := request.Header.Get("Authorization")
+	fmt.Println("Auth ", auth)
+	r := request.Body
+
+	json.NewDecoder(r).Decode(&phoneCode)
+	fmt.Println("Code ", phoneCode.Code)
+
+	newauth := strings.Split(auth, "Bearer ")
+	fmt.Println("New Auth:", newauth[1])
+
+	// decode JWT if it is successful go to the handler, if it is not successful send an error message and return
+	token, _ := jwt.Parse(newauth[1], func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("there was an error in decoding JWT")
+		}
+		return []byte(phoneCode.Code),nil
+	})
+	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		var student Student
+		mapstructure.Decode(claims, &student)
+		json.NewEncoder(response).Encode(student)
+	} else {
+		http.Error(response, "Invalid Authorization token", 400)
+	}
+}
+
+func AuthRequired(handler http.HandlerFunc) http.HandlerFunc {
+	return func(response http.ResponseWriter, request *http.Request) {
+		// middleware code
+		// decode jwt through Authorization header
+		handler.ServeHTTP(response,request)
+	}
+}
+
 func main() {
 
 	LogFileSetup()
@@ -294,6 +336,7 @@ func main() {
 
 	router.HandleFunc("/api/signup", CreateStudentAccountEndpoint).Methods("POST")
 	router.HandleFunc("/api/authenticate", CreateJwtokenEndpoint).Methods("POST")
+	router.HandleFunc("/api/phonecode", CheckMobileCode).Methods("POST")
 
 	//add a new route that gets the password as input along with the jwt from local storage and uses this to unlock this.
 	// if JWT is decoded send back 200 along with the student object if JWT is not decoded send back 400
