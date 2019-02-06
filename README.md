@@ -83,5 +83,30 @@ and returns the following:
 "unique_id": "f1ed1046-738f-45c4-aa94-090fbcc2e6f5"
 }
 ```
+#### Endpoint: /api/getstudent
+#### Description:
+1. Get the Json Web Token and its Key as request headers
+2. Decode this JWT with the Key
+3. Use the Unique I.D in the payload to Query MongoDB for the Student that has this unique_id
+4. Return this Student as a JSON Object
 
+Documentation:
+#### `POST /api/getstudent` which accepts an empty data structure in JSON:
+
+#### with headers:
+```
+signK: 9048291
+
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdF9uYW1lIjoiSm9obiIsInN0dWRlbnRfaWQiOiJhY2ZiNDYzIiwicGhvbmVfbm8iOiIwNzIwMzAxOTI5MzAxIiwiaXNzIjoiZ29sYW5nIGFwaSIsImV4cCI6MTUxNjIzOTAyMn0.0y5110nIWnv5OhwXuKnHnhgK4AIBI52y7TJuDbNw-eg
+```
+and returns the following:
+```
+{
+"first_name": "John",
+"last_name":  "Doe",
+"phone_no": "0720301929301",
+"student_id": "acfb463",
+"unique_id": "f1ed1046-738f-45c4-aa94-090fbcc2e6f5"
+}
+```
 
