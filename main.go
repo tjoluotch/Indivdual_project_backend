@@ -94,6 +94,13 @@ func initKeys() {
 }
 
 
+func enableCORS(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+	(*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	(*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+}
+
+
 
 // Get the form data entered by client; FirstName, LastName, phone Number,
 // assign the person a unique i.d
@@ -102,10 +109,9 @@ func initKeys() {
 // if they aren't in db add to db and send a message with success
 func CreateStudentAccountEndpoint(response http.ResponseWriter, request *http.Request){
 
+
 	//CORS
-	response.Header().Set("Access-Control-Allow-Origin", "*")
-	response.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-	response.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+	enableCORS(&response)
 
 	client, err := mongo.NewClient("mongodb://localhost:27017")
 	if err != nil {
@@ -156,9 +162,7 @@ func CreateStudentAccountEndpoint(response http.ResponseWriter, request *http.Re
 
 func CreateJwtokenEndpoint(response http.ResponseWriter, request *http.Request){
 	//CORS
-	response.Header().Set("Access-Control-Allow-Origin", "*")
-	response.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-	response.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+	enableCORS(&response)
 
 	// step 1 authenticate user
 
@@ -291,7 +295,10 @@ func sendTwillioMessage(code, phone_no string) error {
 	return nil
 }
 
-func CheckMobileCode(response http.ResponseWriter, request *http.Request) {
+func CheckMobileCodeEndpoint(response http.ResponseWriter, request *http.Request) {
+	//CORS
+	enableCORS(&response)
+
 	var phoneCode PhoneCode
 	auth := request.Header.Get("Authorization")
 	fmt.Println("Auth ", auth)
@@ -327,6 +334,12 @@ func AuthRequired(handler http.HandlerFunc) http.HandlerFunc {
 	}
 }
 
+func GetStudentEndpoint(response http.ResponseWriter, request *http.Request) {
+	//CORS
+	enableCORS(&response)
+
+}
+
 func main() {
 
 	LogFileSetup()
@@ -336,7 +349,7 @@ func main() {
 
 	router.HandleFunc("/api/signup", CreateStudentAccountEndpoint).Methods("POST")
 	router.HandleFunc("/api/authenticate", CreateJwtokenEndpoint).Methods("POST")
-	router.HandleFunc("/api/phonecode", CheckMobileCode).Methods("POST")
+	router.HandleFunc("/api/phonecode", CheckMobileCodeEndpoint).Methods("POST")
 
 	//add a new route that gets the password as input along with the jwt from local storage and uses this to unlock this.
 	// if JWT is decoded send back 200 along with the student object if JWT is not decoded send back 400
