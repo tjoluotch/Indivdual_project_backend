@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
+	context2 "github.com/gorilla/context"
 	"github.com/gorilla/mux"
 	"github.com/mitchellh/mapstructure"
 	"github.com/mongodb/mongo-go-driver/bson"
@@ -43,6 +44,10 @@ type CustomsClaimsStudent struct {
 
 type PhoneCode struct {
 	Code string `json:"phoneCode"`
+}
+
+type Exception struct {
+	Message string `json:"message"`
 }
 
 // Global variables to be able to use in each endpoint
@@ -326,12 +331,51 @@ func CheckMobileCodeEndpoint(response http.ResponseWriter, request *http.Request
 	}
 }
 
-func AuthRequired(handler http.HandlerFunc) http.HandlerFunc {
-	return func(response http.ResponseWriter, request *http.Request) {
-		// middleware code
-		// decode jwt through Authorization header
-		handler.ServeHTTP(response,request)
-	}
+// Middleware works
+func ValidationMiddleware(next http.HandlerFunc) http.HandlerFunc {
+
+	return http.HandlerFunc(func (response http.ResponseWriter, request *http.Request) {
+		// Get the request headers
+		authHeader := strings.Split(request.Header.Get("Authorization"), "Bearer ")
+		authTok := authHeader[1]
+		signK := request.Header.Get("signK")
+
+		// Get Auth and key from header,
+		// Check if they are present
+		if authHeader[1] != "" && signK != "" {
+			// decode JWT if it is successful go to the handler, if it is not successful send an error message and return
+			token, err := jwt.Parse(authTok, func(token *jwt.Token) (interface{}, error) {
+				if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+					return nil, fmt.Errorf("there was an error in decoding JWT")
+				}
+				return []byte(signK),nil
+			})
+			if err != nil {
+				// if there was an error decoding the key
+				response.WriteHeader(400)
+				json.NewEncoder(response).Encode(Exception{Message: err.Error()})
+				return
+			}
+			if token.Valid {
+				// Send decoded token claims
+				context2.Set(request, "decoded", token.Claims)
+				next(response,request)
+			} else {
+				response.WriteHeader(400)
+				json.NewEncoder(response).Encode(Exception{Message: "Invalid Authorization Token or key"})
+			}
+		} else {
+			json.NewEncoder(response).Encode(Exception{Message: "An Authorization header & signK is needed. One or both are missing"})
+		}
+	})
+}
+
+func TestEndpoint(w http.ResponseWriter, req *http.Request) {
+	decoded := context2.Get(req, "decoded")
+	var student Student
+	claims := decoded.(jwt.MapClaims)
+	mapstructure.Decode(claims, &student)
+	json.NewEncoder(w).Encode(student)
 }
 
 func GetStudentEndpoint(response http.ResponseWriter, request *http.Request) {
@@ -340,7 +384,7 @@ func GetStudentEndpoint(response http.ResponseWriter, request *http.Request) {
 	// set response header
 	response.Header().Set("Content-Type", "application/json")
 
-
+	// Get the request headers
 	authHeader := strings.Split(request.Header.Get("Authorization"), "Bearer ")
 	authTok := authHeader[1]
 	signK := request.Header.Get("signK")
@@ -405,7 +449,9 @@ func main() {
 	router.HandleFunc("/api/signup", CreateStudentAccountEndpoint).Methods("POST")
 	router.HandleFunc("/api/authenticate", CreateJwtokenEndpoint).Methods("POST")
 	router.HandleFunc("/api/phonecode", CheckMobileCodeEndpoint).Methods("POST")
+
 	router.HandleFunc("/api/getstudent", GetStudentEndpoint).Methods("GET")
+	router.HandleFunc("/api/middleware-test", ValidationMiddleware(TestEndpoint)).Methods("GET")
 
 	//add a new route that gets the password as input along with the jwt from local storage and uses this to unlock this.
 	// if JWT is decoded send back 200 along with the student object if JWT is not decoded send back 400
