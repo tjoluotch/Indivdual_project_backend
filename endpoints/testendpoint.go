@@ -8,6 +8,7 @@ import (
 	"net/http"
 )
 
+// example of how to use endpoint with middleware
 func TestEndpoint(w http.ResponseWriter, req *http.Request) {
 	decoded := context2.Get(req, "decoded")
 	var student Student

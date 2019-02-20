@@ -13,6 +13,20 @@ type Student struct {
 	Unique_ID string `json:"unique_id,omitempty"`
 }
 
+type Module struct {
+	Module_ID string `json:"module_id,omitempty"`
+	Name string `json:"module_name,omitempty"`
+	Notes string `json:"module_notes,omitempty"`
+	TaskList []Task `json:"module_tasks,omitempty"`
+}
+
+type Task struct {
+	Task_ID string `json:"task_id,omitempty"`
+	Description string `json:"task_description,omitempty"`
+	// 3 types of status: 'Not Started', 'working on it', 'finished'.
+	Status string `json:"task_status,omitempty"`
+}
+
 type JwToken struct {
 	Token string `json:"token,omitempty"`
 }
@@ -37,6 +51,4 @@ var client *mongo.Client
 
 const(
 	dbName string = "Studently"
-	privKeyPath string = "keys/app.rsa"
-	pubKeyPath string = "keys/app.rsa.pub"
 )
