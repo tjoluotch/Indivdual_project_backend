@@ -59,7 +59,7 @@ func CreateStudentAccountEndpoint(response http.ResponseWriter, request *http.Re
 	studentCollection := client.Database(dbName).Collection("students")
 	_, err = studentCollection.InsertOne(context.Background(),data)
 	if err != nil {
-		response.WriteHeader(501)
+		response.WriteHeader(400)
 		response.Write([]byte(`{ "message": "` + err.Error() + `" }`))
 	}
 	// encoding json object for returning to the client

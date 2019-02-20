@@ -11,13 +11,14 @@ type Student struct {
 	Phone_No string	 `json:"phone_no,omitempty"`
 	Student_ID string `json:"student_id,omitempty"`
 	Unique_ID string `json:"unique_id,omitempty"`
+	Modules []Module `bson:"modules" json:"modules,omitempty"`
 }
 
 type Module struct {
 	Module_ID string `json:"module_id,omitempty"`
 	Name string `json:"module_name,omitempty"`
 	Notes string `json:"module_notes,omitempty"`
-	TaskList []Task `json:"module_tasks,omitempty"`
+	TaskList []Task `bson:"module_tasks" json:"module_tasks,omitempty"`
 }
 
 type Task struct {
