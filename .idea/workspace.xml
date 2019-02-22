@@ -2,30 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0c1928a6-7ff3-466e-9034-bc31cf426943" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/endpoints/addmodule.go" beforeDir="false" afterPath="$PROJECT_DIR$/endpoints/addmodule.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/endpoints/datamodels.go" beforeDir="false" afterPath="$PROJECT_DIR$/endpoints/datamodels.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/info.logWed, 20 Feb 2019 04:27:57 GMT" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/info.logWed, 20 Feb 2019 04:28:24 GMT" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/info.logWed, 20 Feb 2019 04:31:57 GMT" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/info.logWed, 20 Feb 2019 04:35:43 GMT" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/info.logWed, 20 Feb 2019 04:40:05 GMT" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/info.logWed, 20 Feb 2019 04:45:39 GMT" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/info.logWed, 20 Feb 2019 05:01:12 GMT" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/info.logWed, 20 Feb 2019 05:15:31 GMT" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/info.logWed, 20 Feb 2019 05:17:23 GMT" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/info.logWed, 20 Feb 2019 05:18:07 GMT" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/info.logWed, 20 Feb 2019 05:28:07 GMT" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/info.logWed, 20 Feb 2019 05:30:51 GMT" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/info.logWed, 20 Feb 2019 05:31:29 GMT" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/info.logWed, 20 Feb 2019 05:33:29 GMT" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/info.logWed, 20 Feb 2019 06:04:41 GMT" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/info.logWed, 20 Feb 2019 06:05:21 GMT" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/info.logWed, 20 Feb 2019 06:05:52 GMT" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/info.logWed, 20 Feb 2019 08:36:12 GMT" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/info.logWed, 20 Feb 2019 08:36:44 GMT" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/info.logWed, 20 Feb 2019 08:37:28 GMT" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/info.logWed, 20 Feb 2019 09:08:39 GMT" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/twillio/twilliosms.go" beforeDir="false" afterPath="$PROJECT_DIR$/twillio/twilliosms.go" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -217,11 +193,6 @@
               </folding>
             </state>
           </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/info.logWed, 20 Feb 2019 20:05:21 GMT">
-          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
