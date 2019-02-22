@@ -13,7 +13,7 @@ func SendTwillioMessage(code, phone_no string) error {
 
 	// Set account keys & information
 	accountSid := "AC32cd443ee4fc285c6a8d1b30805ae462"
-	authToken := "8342021b04ecfd7990cfe31807ab56f4"
+	authToken := "85cf47051f14ddee07a440affb58915e"
 	urlStr := "https://api.twilio.com/2010-04-01/Accounts/" + accountSid + "/Messages.json"
 
 	twillioNo := "+447480534149"

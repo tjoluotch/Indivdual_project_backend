@@ -82,10 +82,14 @@ func AddModuleEndpoint(response http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	// current bug
-	update := bson.D{{"$push", bson.D{{"modules", module},
-	}},
-	}
+
+
+	//value,_ := bson.Marshal(moduleSlice)
+
+
+	// fixed
+	// This is the way to add to the array
+	update := bson.M{"$push": bson.M{"modules": module}}
 
 	_, err = studentCollection.UpdateOne(ctx, filter, update)
 	if err != nil {
