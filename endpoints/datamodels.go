@@ -6,26 +6,26 @@ import (
 )
 
 type Student struct {
-	FirstName string `json:"first_name,omitempty"`
-	LastName string	 `json:"last_name,omitempty"`
-	Phone_No string	 `json:"phone_no,omitempty"`
-	Student_ID string `json:"student_id,omitempty"`
-	Unique_ID string `json:"unique_id,omitempty"`
-	Modules []Module `bson:"modules,omitempty" json:"modules,omitempty"`
+	FirstName string `bson:"first_name,omitempty" json:"first_name,omitempty"`
+	LastName string	 `bson:"last_name,omitempty" json:"last_name,omitempty"`
+	Phone_No string	 `bson:"phone_no,omitempty" json:"phone_no,omitempty"`
+	Student_ID string `bson:"student_id,omitempty" json:"student_id,omitempty"`
+	Unique_ID string `bson:"unique_id,omitempty" json:"unique_id,omitempty"`
 }
 
 type Module struct {
-	Module_ID string `json:"module_id,omitempty"`
-	Name string `json:"module_name,omitempty"`
-	Notes string `json:"module_notes,omitempty"`
+	Module_ID string `bson:"module_id,omitempty" json:"module_id,omitempty"`
+	Student_ID string `bson:"student_id,omitempty" json:"student_id,omitempty"`
+	Name string `bson:"module_name,omitempty" json:"module_name,omitempty"`
+	Notes string `bson:"module_notes,omitempty" json:"module_notes,omitempty"`
 	TaskList []Task `bson:"module_tasks,omitempty" json:"module_tasks,omitempty"`
 }
 
 type Task struct {
-	Task_ID string `json:"task_id,omitempty"`
-	Description string `json:"task_description,omitempty"`
+	Task_ID string `bson:"task_id,omitempty" json:"task_id,omitempty"`
+	Description string `bson:"task_description,omitempty" json:"task_description,omitempty"`
 	// 3 types of status: 'Not Started', 'working on it', 'finished'.
-	Status string `json:"task_status,omitempty"`
+	Status string `bson:"task_status,omitempty" json:"task_status,omitempty"`
 }
 
 type JwToken struct {

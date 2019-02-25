@@ -1,21 +1,10 @@
 package endpoints
 
-import (
-	"context"
-	"encoding/json"
-	"fmt"
-	"github.com/dgrijalva/jwt-go"
-	context2 "github.com/gorilla/context"
-	"github.com/mitchellh/mapstructure"
-	"github.com/mongodb/mongo-go-driver/bson"
-	"github.com/mongodb/mongo-go-driver/mongo"
-	"github.com/satori/go.uuid"
-	"log"
-	"mygosource/ind_proj_backend/cors"
-	"net/http"
-	"time"
-)
+import "net/http"
 
+// Use this when adding tasks to module
+
+/*
 func AddModuleEndpoint(response http.ResponseWriter, request *http.Request) {
 	//CORS
 	cors.EnableCORS(&response)
@@ -99,4 +88,9 @@ func AddModuleEndpoint(response http.ResponseWriter, request *http.Request) {
 
 	response.WriteHeader(200)
 	response.Write([]byte("successfully added module"))
+}
+*/
+
+func AddModuleEndpoint(response http.ResponseWriter, request *http.Request) {
+	
 }
