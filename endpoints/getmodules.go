@@ -20,7 +20,7 @@ import (
 func GetModulesEndpoint(response http.ResponseWriter, request *http.Request) {
 	//CORS
 	cors.EnableCORS(&response)
-	fmt.Println("Add module")
+	fmt.Println("Get Modules")
 	// Decode jwt claims into student Model
 	decoded := context2.Get(request, "decoded")
 	var student Student
@@ -79,7 +79,7 @@ func GetModulesEndpoint(response http.ResponseWriter, request *http.Request) {
 	// Close the cursor once finished
 	cursor.Close(context.TODO())
 
-	fmt.Printf("Found multiple documents (Student modules): %+v\n", results)
+	//fmt.Printf("Found multiple documents (Student modules): %+v\n", results)
 
 	// Working - decode back to json
 	json.NewEncoder(response).Encode(results)

@@ -46,6 +46,8 @@ func main() {
 	router.HandleFunc("/api/addmodule", endpoints.ValidationMiddleware(endpoints.AddModuleEndpoint)).Methods("PUT")
 	router.HandleFunc("/api/getmodules", endpoints.ValidationMiddleware(endpoints.GetModulesEndpoint)).Methods("GET")
 
+	router.HandleFunc("/api/addtask", endpoints.ValidationMiddleware(endpoints.AddTaskEndpoint)).Methods("PUT")
+
 	//add a new route that gets the password as input along with the jwt from local storage and uses this to unlock this.
 	// if JWT is decoded send back 200 along with the student object if JWT is not decoded send back 400
 

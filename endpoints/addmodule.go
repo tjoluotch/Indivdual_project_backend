@@ -133,7 +133,7 @@ func AddModuleEndpoint(response http.ResponseWriter, request *http.Request) {
 	// generate unique id and change to string
 	moduleID, err := uuid.NewV4()
 	if err != nil {
-		http.Error(response, "Unique ID failed to generate" , 400)
+		http.Error(response, "Unique ID failed to generate for new Module Object" , 400)
 		return
 	}
 	moduleIDString := moduleID.String()
