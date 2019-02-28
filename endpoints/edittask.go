@@ -58,15 +58,13 @@ func EditTaskEndpoint(response http.ResponseWriter, request *http.Request) {
 	task.Task_ID = moduleIDWithTask.Task_ID
 
 	// Search parameters to find the task in the db to be updated
-
+	searchParams := "tasks.task_id"
 
 	// encode search parameters as bson
-	filter := bson.D{{"tasks.task_id", task.Task_ID}}
+	filter := bson.D{{searchParams, task.Task_ID}}
 
 	// update the task object within the module
 	update := bson.M{"$set": bson.M{"tasks.$": task}}
-
-	// avoid upsert or duplication
 
 
 	_, err = moduleCollection.UpdateOne(context.TODO(), filter, update)

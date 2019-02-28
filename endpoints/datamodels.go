@@ -19,6 +19,7 @@ type Module struct {
 	Name string `bson:"module_name,omitempty" json:"module_name,omitempty"`
 	Notes string `bson:"module_notes,omitempty" json:"module_notes,omitempty"`
 	TaskList []Task `bson:"tasks,omitempty" json:"tasks,omitempty"`
+	CourseworkList []Coursework `bson:"cw_grp,omitempty" json:"cw_grp,omitempty"`
 }
 
 type Task struct {
@@ -26,6 +27,12 @@ type Task struct {
 	Description string `bson:"task_description,omitempty" json:"task_description,omitempty"`
 	// 3 types of status: 'Not Started', 'working on it', 'finished'.
 	Status string `bson:"task_status,omitempty" json:"task_status,omitempty"`
+}
+
+type Coursework struct {
+	Coursework_ID string `bson:"cw_id,omitempty" json:"cw_id,omitempty"`
+	Coursework_Description string `bson:"cw_description,omitempty" json:"cw_description,omitempty"`
+	Due_Date string `bson:"cw_date,omitempty" json:"cw_date,omitempty"`
 }
 
 type JwToken struct {
