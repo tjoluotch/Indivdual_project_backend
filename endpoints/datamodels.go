@@ -35,6 +35,13 @@ type Coursework struct {
 	Due_Date string `bson:"cw_date,omitempty" json:"cw_date,omitempty"`
 }
 
+type CourseWorkWithModule struct {
+	Module_ID string `bson:"module_id,omitempty" json:"module_id,omitempty"`
+	Coursework_ID string `bson:"cw_id,omitempty" json:"cw_id,omitempty"`
+	Coursework_Description string `bson:"cw_description,omitempty" json:"cw_description,omitempty"`
+	Due_Date string `bson:"cw_date,omitempty" json:"cw_date,omitempty"`
+}
+
 type JwToken struct {
 	Token string `json:"token,omitempty"`
 }

@@ -54,6 +54,8 @@ func main() {
 	router.HandleFunc("/api/addtask", endpoints.ValidationMiddleware(endpoints.AddTaskEndpoint)).Methods("PUT")
 	router.HandleFunc("/api/editask", endpoints.ValidationMiddleware(endpoints.EditTaskEndpoint)).Methods("PUT")
 
+	router.HandleFunc("/api/addcwk", endpoints.ValidationMiddleware(endpoints.AddCourseworkEndpoint)).Methods("PUT")
+
 
 	//log server running
 	log.Printf("server running on port %v", 12345)
