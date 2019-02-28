@@ -19,7 +19,7 @@ type Module struct {
 	Name string `bson:"module_name,omitempty" json:"module_name,omitempty"`
 	Notes string `bson:"module_notes,omitempty" json:"module_notes,omitempty"`
 	TaskList []Task `bson:"tasks,omitempty" json:"tasks,omitempty"`
-	CourseworkList []Coursework `bson:"cw_grp,omitempty" json:"cw_grp,omitempty"`
+	CourseworkList []Coursework `bson:"cwks,omitempty" json:"cwks,omitempty"`
 }
 
 type Task struct {
