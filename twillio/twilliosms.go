@@ -4,19 +4,25 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"mygosource/ind_proj_backend/envar"
 	"net/http"
 	"net/url"
+	"os"
 	"strings"
 )
 
 func SendTwillioMessage(code, phone_no string) error {
 
-	// Set account keys & information
-	accountSid := "AC32cd443ee4fc285c6a8d1b30805ae462"
-	authToken := "58ba557980e7192e977200c009ff85f9"
-	urlStr := "https://api.twilio.com/2010-04-01/Accounts/" + accountSid + "/Messages.json"
+	envar.Variables()
 
-	twillioNo := "+447480534149"
+
+	// Set account keys & information
+	accountSid := os.Getenv("ACCOUNT_SID")
+	authToken := os.Getenv("AUTH_TOKEN")
+	smsUrlSection := os.Getenv("SMS_URL_SUBSECTION")
+	urlStr := smsUrlSection + accountSid + "/Messages.json"
+
+	twillioNo := os.Getenv("SMS_NUM")
 
 	loginMessage := "Thanks for using Studently, please enter this Code: " + code
 

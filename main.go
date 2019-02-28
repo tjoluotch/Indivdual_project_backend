@@ -4,6 +4,7 @@ import (
 	"github.com/gorilla/mux"
 	"log"
 	"mygosource/ind_proj_backend/endpoints"
+	"mygosource/ind_proj_backend/envar"
 	"net/http"
 	"os"
 	"time"
@@ -33,6 +34,10 @@ func main() {
 
 	LogFileSetup()
 
+	envar.Variables()
+
+	httpPort := os.Getenv("HTTP_PORT")
+
 	router := mux.NewRouter()
 
 
@@ -48,12 +53,10 @@ func main() {
 
 	router.HandleFunc("/api/addtask", endpoints.ValidationMiddleware(endpoints.AddTaskEndpoint)).Methods("PUT")
 
-	//add a new route that gets the password as input along with the jwt from local storage and uses this to unlock this.
-	// if JWT is decoded send back 200 along with the student object if JWT is not decoded send back 400
 
 	//log server running
 	log.Printf("server running on port %v", 12345)
-	log.Fatal(http.ListenAndServe(":12345",router))
+	log.Fatal(http.ListenAndServe(httpPort,router))
 
 
 }
