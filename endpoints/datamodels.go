@@ -47,9 +47,17 @@ type Exception struct {
 	Message string `json:"message"`
 }
 
-type ModuleWithTask struct {
+type ModuleWithTaskForAddTaskEP struct {
 	Module_ID string `bson:"module_id,omitempty" json:"module_id,omitempty"`
 	Description string `bson:"task_description,omitempty" json:"task_description,omitempty"`
+	Status string `bson:"task_status,omitempty" json:"task_status,omitempty"`
+}
+
+type ModuleWithTaskForEditTaskEP struct {
+	Module_ID string `bson:"module_id,omitempty" json:"module_id,omitempty"`
+	Description string `bson:"task_description,omitempty" json:"task_description,omitempty"`
+	Task_ID string `bson:"task_id,omitempty" json:"task_id,omitempty"`
+	// 3 types of status: 'Not Started', 'working on it', 'finished'.
 	Status string `bson:"task_status,omitempty" json:"task_status,omitempty"`
 }
 

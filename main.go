@@ -52,6 +52,7 @@ func main() {
 	router.HandleFunc("/api/getmodules", endpoints.ValidationMiddleware(endpoints.GetModulesEndpoint)).Methods("GET")
 
 	router.HandleFunc("/api/addtask", endpoints.ValidationMiddleware(endpoints.AddTaskEndpoint)).Methods("PUT")
+	router.HandleFunc("/api/editask", endpoints.ValidationMiddleware(endpoints.EditTaskEndpoint)).Methods("PUT")
 
 
 	//log server running

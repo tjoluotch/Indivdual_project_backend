@@ -9,19 +9,16 @@ import (
 	"github.com/mitchellh/mapstructure"
 	"github.com/mongodb/mongo-go-driver/bson"
 	"github.com/mongodb/mongo-go-driver/mongo"
-	"github.com/satori/go.uuid"
 	"log"
 	"mygosource/ind_proj_backend/cors"
 	"net/http"
 	"time"
 )
 
-
-// Find Module by module id and then add task to it
-func AddTaskEndpoint(response http.ResponseWriter, request *http.Request) {
+func EditTaskEndpoint(response http.ResponseWriter, request *http.Request) {
 	//CORS
 	cors.EnableCORS(&response)
-	fmt.Println("Add Task")
+	fmt.Println("Edit Task")
 	// Decode jwt claims into student Model
 	decoded := context2.Get(request, "decoded")
 	var student Student
@@ -41,49 +38,44 @@ func AddTaskEndpoint(response http.ResponseWriter, request *http.Request) {
 	}
 	moduleCollection := client.Database(dbName).Collection("modules")
 
-	// generate unique id for the new Task to be added
-	taskID, err := uuid.NewV4()
-	if err != nil {
-		http.Error(response, "Unique ID failed to generate for new Task object" , 400)
-		return
-	}
-	taskIDString := taskID.String()
-
-
-	// decoding JSON put data into Task with module struct
-	var task Task
-	var taskWithModuleID ModuleWithTaskForAddTaskEP
+	// Decode request body into data structure
+	var moduleIDWithTask ModuleWithTaskForEditTaskEP
 	decoder := json.NewDecoder(request.Body)
-	err = decoder.Decode(&taskWithModuleID)
+	err = decoder.Decode(&moduleIDWithTask)
+
 	//if there was an error panic
 	if err != nil {
 		http.Error(response, "JSON failed to decode request body to Task with module object " + err.Error() , 400)
 		return
 	}
-	// Encoded task struct fully
-	task.Task_ID = taskIDString
-	task.Status = taskWithModuleID.Status
-	task.Description = taskWithModuleID.Description
 
-	// Search parameters to find the module in db
-	searchParams := "module_id"
-	moduleUniqueID := &taskWithModuleID.Module_ID
+	fmt.Printf("Data structure %v\n", &moduleIDWithTask)
+
+	// Encode Task struct
+	var task Task
+	task.Description = moduleIDWithTask.Description
+	task.Status = moduleIDWithTask.Status
+	task.Task_ID = moduleIDWithTask.Task_ID
+
+	// Search parameters to find the task in the db to be updated
+
 
 	// encode search parameters as bson
-	filter := bson.D{{searchParams,moduleUniqueID}}
+	filter := bson.D{{"tasks.task_id", task.Task_ID}}
 
-	// update the module object to have array of tasks
-	update := bson.M{"$push": bson.M{"tasks": task}}
+	// update the task object within the module
+	update := bson.M{"$set": bson.M{"tasks.$": task}}
+
+	// avoid upsert or duplication
+
 
 	_, err = moduleCollection.UpdateOne(context.TODO(), filter, update)
 	if err != nil {
-		http.Error(response, "Problem updating Module to include latest task " + err.Error(), 400)
+		http.Error(response, "Problem Editing Task see edittask.go " + err.Error(), 400)
 		return
 	}
 
 	// send success message
 	response.WriteHeader(200)
-	response.Write([]byte(`{ "message": "Successfully added Task to Module object" }`))
-
-	//fmt.Printf("the Task: Description %v, Task Status %v, The module ID: %v\n", taskWithModuleID.Description, taskWithModuleID.Status, taskWithModuleID.Module_ID)
+	response.Write([]byte(`{ "message": "Successfully Edited task object" }`))
 }
