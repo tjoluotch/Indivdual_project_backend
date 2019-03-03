@@ -48,8 +48,8 @@ func GetModulesEndpoint(response http.ResponseWriter, request *http.Request) {
 	// Then add a filter to find the documents by.
 	moduleFilter := bson.D{{"student_id", student.Student_ID}}
 
-	// Slice to store decoded module documents
-	var results []Module
+	// store results in module slice: initialising, so if empty, then an empty array is returned rather than nil.
+	results := []Module{}
 
 	// search db for all modules belonging to a student
 	cursor, err := moduleCollection.Find(context.TODO(), moduleFilter, nil)

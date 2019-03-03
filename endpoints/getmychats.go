@@ -18,7 +18,7 @@ import (
 func GetMyChatsEndpoint(response http.ResponseWriter, request *http.Request) {
 	//CORS
 	cors.EnableCORS(&response)
-	fmt.Println("Get Modules")
+	fmt.Println("Get Chatgroups for particular student")
 	// Decode jwt claims into student Model
 	decoded := context2.Get(request, "decoded")
 	var student Student
@@ -43,8 +43,8 @@ func GetMyChatsEndpoint(response http.ResponseWriter, request *http.Request) {
 	// Filter to find the chats the member is a part of by
 	chatFilter := bson.D{{"members", student.Student_ID}}
 
-	// store results in chat slice
-	var results []Chat
+	// store results in chat slice: initialising, so if empty, then an empty array is returned rather than nil.
+	results := []Chat{}
 
 	// search db for all chats the student is a member of
 	cursor, err := chatCollection.Find(context.TODO(), chatFilter, nil)
