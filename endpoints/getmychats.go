@@ -15,9 +15,7 @@ import (
 	"time"
 )
 
-
-// Get Modules for each student by using the student id
-func GetModulesEndpoint(response http.ResponseWriter, request *http.Request) {
+func GetMyChatsEndpoint(response http.ResponseWriter, request *http.Request) {
 	//CORS
 	cors.EnableCORS(&response)
 	fmt.Println("Get Modules")
@@ -26,8 +24,6 @@ func GetModulesEndpoint(response http.ResponseWriter, request *http.Request) {
 	var student Student
 	claims := decoded.(jwt.MapClaims)
 	mapstructure.Decode(claims, &student)
-
-	// step 1 authenticate user
 
 	// Db opening section
 	client, err := mongo.NewClient("mongodb://localhost:27017")
@@ -42,31 +38,29 @@ func GetModulesEndpoint(response http.ResponseWriter, request *http.Request) {
 		log.Fatalf("Error Connecting to MongoDB at context.WtihTimeout: Err-> %v\n ", err)
 		return
 	}
-	moduleCollection := client.Database(dbName).Collection("modules")
+	chatCollection := client.Database(dbName).Collection("chatspace")
 
+	// Filter to find the chats the member is a part of by
+	chatFilter := bson.D{{"members", student.Student_ID}}
 
-	// Then add a filter to find the documents by.
-	moduleFilter := bson.D{{"student_id", student.Student_ID}}
+	// store results in chat slice
+	var results []Chat
 
-	// Slice to store decoded module documents
-	var results []Module
-
-	// search db for all modules belonging to a student
-	cursor, err := moduleCollection.Find(context.TODO(), moduleFilter, nil)
+	// search db for all chats the student is a member of
+	cursor, err := chatCollection.Find(context.TODO(), chatFilter, nil)
 	if err != nil {
-		http.Error(response, "Issue searching DB to get Student's modules", http.StatusBadRequest)
+		http.Error(response, "Issue searching DB to get Chat groups student is a part of: " + err.Error(), http.StatusBadRequest)
 		return
 	}
 
 	// Finding multiple documents returns a cursor
 	// Iterating through the cursor allows us to decode documents one at a time
-	for cursor.Next(context.TODO())  {
+	for cursor.Next(context.TODO()) {
 
-		// create a value into which the single document can be decoded
-		var element Module
+		var element Chat
 		err = cursor.Decode(&element)
 		if err != nil {
-			http.Error(response, "Issue decoding one of the Modules to Struct " + err.Error(), http.StatusBadRequest)
+			http.Error(response, "Issue decoding one of the Chats to Struct " + err.Error(), http.StatusBadRequest)
 			return
 		}
 		results = append(results, element)
@@ -79,8 +73,6 @@ func GetModulesEndpoint(response http.ResponseWriter, request *http.Request) {
 
 	// Close the cursor once finished
 	cursor.Close(context.TODO())
-
-	//fmt.Printf("Found multiple documents (Student modules): %+v\n", results)
 
 	// Working - decode back to json
 	json.NewEncoder(response).Encode(results)

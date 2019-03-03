@@ -59,6 +59,7 @@ func main() {
 	router.HandleFunc("/api/createchat", endpoints.ValidationMiddleware(endpoints.CreateChatEndpoint)).Methods("PUT")
 
 
+
 	//log server running
 	log.Printf("server running on port %v", 12345)
 	log.Fatal(http.ListenAndServe(httpPort,router))
