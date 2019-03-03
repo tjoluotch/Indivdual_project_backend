@@ -44,7 +44,7 @@ type CourseWorkWithModule struct {
 
 type Chat struct {
 	Chat_ID string `bson:"chat_id,omitempty" json:"chat_id,omitempty"`
-	Chat_Name string `bson:"chat_name,omitempty" json:"chat_id,omitempty"`
+	Chat_Name string `bson:"chat_name,omitempty" json:"chat_name,omitempty"`
 	// Store student I.d's and use this to identify group members
 	Chat_Members []string `bson:"members,omitempty" json:"members,omitempty"`
 	Chat_Messages []Message `bson:"messages,omitempty" json:"messages,omitempty"`

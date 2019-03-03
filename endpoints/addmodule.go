@@ -159,7 +159,7 @@ func AddModuleEndpoint(response http.ResponseWriter, request *http.Request) {
 	// encoding module to bson
 	data, err := bson.Marshal(module)
 	if err != nil {
-		log.Fatalf("Problem encoding Student struct into BSON: Err-> %v\n ",err)
+		http.Error(response,"Problem encoding Module struct into BSON " + err.Error(), 400 )
 		return
 	}
 

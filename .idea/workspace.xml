@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0c1928a6-7ff3-466e-9034-bc31cf426943" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/endpoints/createchat.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/endpoints/addmodule.go" beforeDir="false" afterPath="$PROJECT_DIR$/endpoints/addmodule.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/endpoints/datamodels.go" beforeDir="false" afterPath="$PROJECT_DIR$/endpoints/datamodels.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -31,7 +34,7 @@
           <entry key="001814199" value="1" />
           <entry key="env" value="2" />
           <entry key="gitignore" value="2" />
-          <entry key="go" value="57" />
+          <entry key="go" value="60" />
           <entry key="log" value="1" />
           <entry key="log0001-01-01 00:00:00 +0000 UTC" value="1" />
           <entry key="logFri, 14 Dec 2018 02:13:50 GMT" value="1" />
@@ -93,7 +96,7 @@
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key=".env file" value="1" />
-          <entry key="Go" value="57" />
+          <entry key="Go" value="60" />
           <entry key="Log" value="1" />
           <entry key="PLAIN_TEXT" value="60" />
           <entry key="x86 Plan9 Assembly" value="1" />
@@ -112,7 +115,7 @@
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key=".env file" value="102" />
-          <entry key="Go" value="18787" />
+          <entry key="Go" value="19440" />
           <entry key="PLAIN_TEXT" value="7" />
         </counts>
       </usages-collector>
@@ -120,18 +123,18 @@
         <counts>
           <entry key="env" value="102" />
           <entry key="gitignore" value="7" />
-          <entry key="go" value="18787" />
+          <entry key="go" value="19440" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="326">
-              <caret line="56" column="114" selection-start-line="56" selection-start-column="114" selection-end-line="56" selection-end-column="114" />
+            <state relative-caret-position="468">
+              <caret line="64" lean-forward="true" selection-start-line="64" selection-end-line="64" />
             </state>
           </provider>
         </entry>
@@ -139,17 +142,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/endpoints/edittask.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="825">
+            <state relative-caret-position="324">
               <caret line="68" selection-start-line="68" selection-end-line="68" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/info.env">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" column="24" selection-start-line="4" selection-start-column="24" selection-end-line="4" selection-end-column="24" />
             </state>
           </provider>
         </entry>
@@ -157,8 +151,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/endpoints/addmodule.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2415">
-              <caret line="175" column="1" selection-start-line="175" selection-start-column="1" selection-end-line="175" selection-end-column="1" />
+            <state relative-caret-position="431">
+              <caret line="174" column="72" lean-forward="true" selection-start-line="172" selection-start-column="4" selection-end-line="174" selection-end-column="72" />
             </state>
           </provider>
         </entry>
@@ -184,8 +178,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/endpoints/addtask.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1065">
-              <caret line="85" column="87" lean-forward="true" selection-start-line="83" selection-start-column="4" selection-end-line="85" selection-end-column="87" />
+            <state relative-caret-position="-108">
+              <caret line="49" column="35" lean-forward="true" selection-start-line="49" selection-start-column="35" selection-end-line="49" selection-end-column="35" />
               <folding>
                 <element signature="e#19#350#0" expanded="true" />
               </folding>
@@ -193,13 +187,25 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/endpoints/datamodels.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="220">
-              <caret line="55" column="50" lean-forward="true" selection-start-line="55" selection-start-column="50" selection-end-line="55" selection-end-column="50" />
+            <state relative-caret-position="158">
+              <caret line="46" column="64" selection-start-line="46" selection-start-column="64" selection-end-line="46" selection-end-column="64" />
               <folding>
                 <element signature="e#19#104#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/endpoints/createchat.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="302">
+              <caret line="24" column="39" selection-start-line="24" selection-start-column="39" selection-end-line="24" selection-end-column="39" />
+              <folding>
+                <element signature="e#19#152#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -259,7 +265,6 @@
         <option value="$PROJECT_DIR$/endpoints/testendpoint.go" />
         <option value="$PROJECT_DIR$/endpoints/createstudent.go" />
         <option value="$PROJECT_DIR$/endpoints/getmodules.go" />
-        <option value="$PROJECT_DIR$/endpoints/addmodule.go" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/envariables/env.go" />
         <option value="$PROJECT_DIR$/envar/env.go" />
@@ -267,10 +272,12 @@
         <option value="$PROJECT_DIR$/info.env" />
         <option value="$PROJECT_DIR$/endpoints/addtask.go" />
         <option value="$PROJECT_DIR$/endpoints/edittask.go" />
-        <option value="$PROJECT_DIR$/main.go" />
         <option value="$PROJECT_DIR$/endpoints/addcw.go" />
         <option value="$PROJECT_DIR$/twillio/courseworksms.go" />
+        <option value="$PROJECT_DIR$/main.go" />
         <option value="$PROJECT_DIR$/endpoints/datamodels.go" />
+        <option value="$PROJECT_DIR$/endpoints/addmodule.go" />
+        <option value="$PROJECT_DIR$/endpoints/createchat.go" />
       </list>
     </option>
   </component>
@@ -428,7 +435,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/info.logWed, 12 Dec 2018 19:37:35 GMT" />
     <entry file="file://$PROJECT_DIR$/info.logWed, 12 Dec 2018 19:42:18 GMT" />
     <entry file="file://$PROJECT_DIR$/info.logWed, 12 Dec 2018 19:38:24 GMT" />
     <entry file="file://$PROJECT_DIR$/info.logWed, 12 Dec 2018 20:34:16 GMT" />
@@ -538,31 +544,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="326">
-          <caret line="56" column="114" selection-start-line="56" selection-start-column="114" selection-end-line="56" selection-end-column="114" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/endpoints/edittask.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="825">
-          <caret line="68" selection-start-line="68" selection-end-line="68" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/info.env">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="4" column="24" selection-start-line="4" selection-start-column="24" selection-end-line="4" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/endpoints/addmodule.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2415">
-          <caret line="175" column="1" selection-start-line="175" selection-start-column="1" selection-end-line="175" selection-end-column="1" />
         </state>
       </provider>
     </entry>
@@ -577,16 +562,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
           <caret line="29" column="5" selection-start-line="29" selection-start-column="5" selection-end-line="29" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/endpoints/addtask.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1065">
-          <caret line="85" column="87" lean-forward="true" selection-start-line="83" selection-start-column="4" selection-end-line="85" selection-end-column="87" />
-          <folding>
-            <element signature="e#19#350#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -607,13 +582,54 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/endpoints/edittask.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="68" selection-start-line="68" selection-end-line="68" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/endpoints/addtask.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-108">
+          <caret line="49" column="35" lean-forward="true" selection-start-line="49" selection-start-column="35" selection-end-line="49" selection-end-column="35" />
+          <folding>
+            <element signature="e#19#350#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/endpoints/datamodels.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="55" column="50" lean-forward="true" selection-start-line="55" selection-start-column="50" selection-end-line="55" selection-end-column="50" />
+        <state relative-caret-position="158">
+          <caret line="46" column="64" selection-start-line="46" selection-start-column="64" selection-end-line="46" selection-end-column="64" />
           <folding>
             <element signature="e#19#104#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/endpoints/addmodule.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="431">
+          <caret line="174" column="72" lean-forward="true" selection-start-line="172" selection-start-column="4" selection-end-line="174" selection-end-column="72" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/endpoints/createchat.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="302">
+          <caret line="24" column="39" selection-start-line="24" selection-start-column="39" selection-end-line="24" selection-end-column="39" />
+          <folding>
+            <element signature="e#19#152#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="468">
+          <caret line="64" lean-forward="true" selection-start-line="64" selection-end-line="64" />
         </state>
       </provider>
     </entry>
