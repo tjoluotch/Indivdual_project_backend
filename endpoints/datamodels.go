@@ -54,6 +54,7 @@ type Message struct {
 	Message_ID string `bson:"msg_id,omitempty" json:"msg_id,omitempty"`
 	Content string `bson:"msg_content,omitempty" json:"msg_content,omitempty"`
 	Sender Student `bson:"sender,omitempty" json:"sender,omitempty"`
+	Sent_At string `bson:"sent_at,omitempty" json:"sent_at,omitempty"`
 }
 
 type JwToken struct {
