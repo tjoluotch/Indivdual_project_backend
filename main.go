@@ -58,6 +58,7 @@ func main() {
 
 	router.HandleFunc("/api/createchat", endpoints.ValidationMiddleware(endpoints.CreateChatEndpoint)).Methods("PUT")
 	router.HandleFunc("/api/getmychats", endpoints.ValidationMiddleware(endpoints.GetMyChatsEndpoint)).Methods("GET")
+	router.HandleFunc("/api/getchatbyid", endpoints.ValidationMiddleware(endpoints.GetChatByIDEndpoint)).Methods("GET")
 
 
 	//log server running

@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0c1928a6-7ff3-466e-9034-bc31cf426943" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/endpoints/getchatbyid.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/endpoints/datamodels.go" beforeDir="false" afterPath="$PROJECT_DIR$/endpoints/datamodels.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -31,7 +32,7 @@
           <entry key="001814199" value="1" />
           <entry key="env" value="2" />
           <entry key="gitignore" value="2" />
-          <entry key="go" value="63" />
+          <entry key="go" value="64" />
           <entry key="log" value="1" />
           <entry key="log0001-01-01 00:00:00 +0000 UTC" value="1" />
           <entry key="logFri, 14 Dec 2018 02:13:50 GMT" value="1" />
@@ -93,7 +94,7 @@
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key=".env file" value="1" />
-          <entry key="Go" value="63" />
+          <entry key="Go" value="64" />
           <entry key="Log" value="1" />
           <entry key="PLAIN_TEXT" value="60" />
           <entry key="x86 Plan9 Assembly" value="1" />
@@ -112,7 +113,7 @@
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key=".env file" value="102" />
-          <entry key="Go" value="20030" />
+          <entry key="Go" value="20371" />
           <entry key="PLAIN_TEXT" value="7" />
         </counts>
       </usages-collector>
@@ -120,7 +121,7 @@
         <counts>
           <entry key="env" value="102" />
           <entry key="gitignore" value="7" />
-          <entry key="go" value="20030" />
+          <entry key="go" value="20371" />
         </counts>
       </usages-collector>
     </session>
@@ -130,8 +131,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="456">
-              <caret line="66" lean-forward="true" selection-start-line="66" selection-end-line="66" />
+            <state relative-caret-position="411">
+              <caret line="63" column="24" lean-forward="true" selection-start-line="63" selection-start-column="24" selection-end-line="63" selection-end-column="24" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/endpoints/getchatbyid.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="431">
+              <caret line="59" column="44" lean-forward="true" selection-start-line="59" selection-start-column="44" selection-end-line="59" selection-end-column="44" />
+              <folding>
+                <element signature="e#19#152#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -139,8 +152,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/endpoints/getmychats.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="141">
-              <caret line="46" column="23" lean-forward="true" selection-start-line="46" selection-start-column="23" selection-end-line="46" selection-end-column="23" />
+            <state relative-caret-position="446">
+              <caret line="79" lean-forward="true" selection-start-line="79" selection-end-line="79" />
               <folding>
                 <element signature="e#19#152#0" expanded="true" />
               </folding>
@@ -151,7 +164,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/endpoints/getstudent.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="258">
+            <state relative-caret-position="371">
               <caret line="63" column="67" selection-start-line="63" selection-start-column="67" selection-end-line="63" selection-end-column="67" />
               <folding>
                 <element signature="e#19#293#0" expanded="true" />
@@ -163,8 +176,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/endpoints/getmodules.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="202">
-              <caret line="51" column="25" selection-start-line="51" selection-start-column="25" selection-end-line="51" selection-end-column="25" />
+            <state relative-caret-position="446">
+              <caret line="87" lean-forward="true" selection-start-line="87" selection-end-line="87" />
               <folding>
                 <element signature="e#19#321#0" expanded="true" />
               </folding>
@@ -202,11 +215,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/endpoints/datamodels.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="308">
-              <caret line="56" column="58" selection-start-line="56" selection-start-column="58" selection-end-line="56" selection-end-column="58" />
+            <state relative-caret-position="194">
+              <caret line="56" column="33" selection-start-line="56" selection-start-column="26" selection-end-line="56" selection-end-column="33" />
               <folding>
                 <element signature="e#19#104#0" expanded="true" />
               </folding>
@@ -221,18 +234,6 @@
               <caret line="20" column="76" selection-start-line="20" selection-end-line="20" selection-end-column="76" />
               <folding>
                 <element signature="e#19#152#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/twillio/courseworksms.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="26" column="132" selection-start-line="26" selection-start-column="132" selection-end-line="26" selection-end-column="132" />
-              <folding>
-                <element signature="e#17#138#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -281,10 +282,11 @@
         <option value="$PROJECT_DIR$/twillio/courseworksms.go" />
         <option value="$PROJECT_DIR$/endpoints/addmodule.go" />
         <option value="$PROJECT_DIR$/endpoints/createchat.go" />
-        <option value="$PROJECT_DIR$/main.go" />
-        <option value="$PROJECT_DIR$/endpoints/getmychats.go" />
         <option value="$PROJECT_DIR$/endpoints/getmodules.go" />
         <option value="$PROJECT_DIR$/endpoints/datamodels.go" />
+        <option value="$PROJECT_DIR$/endpoints/getmychats.go" />
+        <option value="$PROJECT_DIR$/main.go" />
+        <option value="$PROJECT_DIR$/endpoints/getchatbyid.go" />
       </list>
     </option>
   </component>
@@ -415,12 +417,12 @@
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17381974" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17381974" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49928468" visible="true" weight="0.29759037" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49928468" visible="true" weight="0.29759037" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.025301205" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -442,7 +444,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/info.logWed, 12 Dec 2018 19:38:24 GMT" />
     <entry file="file://$PROJECT_DIR$/info.logWed, 12 Dec 2018 20:34:16 GMT" />
     <entry file="file://$PROJECT_DIR$/info.logWed, 12 Dec 2018 20:38:26 GMT" />
     <entry file="file://$PROJECT_DIR$/info.logWed, 12 Dec 2018 20:40:27 GMT" />
@@ -595,16 +596,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/endpoints/getstudent.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="258">
-          <caret line="63" column="67" selection-start-line="63" selection-start-column="67" selection-end-line="63" selection-end-column="67" />
-          <folding>
-            <element signature="e#19#293#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/endpoints/createchat.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="242">
@@ -615,17 +606,37 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/endpoints/datamodels.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="194">
+          <caret line="56" column="33" selection-start-line="56" selection-start-column="26" selection-end-line="56" selection-end-column="33" />
+          <folding>
+            <element signature="e#19#104#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/endpoints/getstudent.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="371">
+          <caret line="63" column="67" selection-start-line="63" selection-start-column="67" selection-end-line="63" selection-end-column="67" />
+          <folding>
+            <element signature="e#19#293#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/main.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="456">
-          <caret line="66" lean-forward="true" selection-start-line="66" selection-end-line="66" />
+        <state relative-caret-position="411">
+          <caret line="63" column="24" lean-forward="true" selection-start-line="63" selection-start-column="24" selection-end-line="63" selection-end-column="24" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/endpoints/getmodules.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="202">
-          <caret line="51" column="25" selection-start-line="51" selection-start-column="25" selection-end-line="51" selection-end-column="25" />
+        <state relative-caret-position="446">
+          <caret line="87" lean-forward="true" selection-start-line="87" selection-end-line="87" />
           <folding>
             <element signature="e#19#321#0" expanded="true" />
           </folding>
@@ -634,20 +645,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/endpoints/getmychats.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="141">
-          <caret line="46" column="23" lean-forward="true" selection-start-line="46" selection-start-column="23" selection-end-line="46" selection-end-column="23" />
+        <state relative-caret-position="446">
+          <caret line="79" lean-forward="true" selection-start-line="79" selection-end-line="79" />
           <folding>
             <element signature="e#19#152#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/endpoints/datamodels.go">
+    <entry file="file://$PROJECT_DIR$/endpoints/getchatbyid.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="56" column="58" selection-start-line="56" selection-start-column="58" selection-end-line="56" selection-end-column="58" />
+        <state relative-caret-position="431">
+          <caret line="59" column="44" lean-forward="true" selection-start-line="59" selection-start-column="44" selection-end-line="59" selection-end-column="44" />
           <folding>
-            <element signature="e#19#104#0" expanded="true" />
+            <element signature="e#19#152#0" expanded="true" />
           </folding>
         </state>
       </provider>
