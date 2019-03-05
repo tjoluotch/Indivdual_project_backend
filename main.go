@@ -60,6 +60,8 @@ func main() {
 	router.HandleFunc("/api/getmychats", endpoints.ValidationMiddleware(endpoints.GetMyChatsEndpoint)).Methods("GET")
 	router.HandleFunc("/api/getchatbyid", endpoints.ValidationMiddleware(endpoints.GetChatByIDEndpoint)).Methods("GET")
 
+	router.HandleFunc("/api/sendmsg", endpoints.ValidationMiddleware(endpoints.SendMessageEndpoint)).Methods("PUT")
+
 
 	//log server running
 	log.Printf("server running on port %v", 12345)

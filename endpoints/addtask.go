@@ -83,7 +83,7 @@ func AddTaskEndpoint(response http.ResponseWriter, request *http.Request) {
 
 	// send success message
 	response.WriteHeader(200)
-	response.Write([]byte(`{ "message": "Successfully added Task to Module object" }`))
+	response.Write([]byte(`{ "message": "Successfully added Task to tasks array in Module object" }`))
 
 	//fmt.Printf("the Task: Description %v, Task Status %v, The module ID: %v\n", taskWithModuleID.Description, taskWithModuleID.Status, taskWithModuleID.Module_ID)
 }
