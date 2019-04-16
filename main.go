@@ -63,6 +63,12 @@ func main() {
 	router.HandleFunc("/api/sendmsg", endpoints.ValidationMiddleware(endpoints.SendMessageEndpoint)).Methods("PUT")
 	router.HandleFunc("/api/edit_chat_name", endpoints.ValidationMiddleware(endpoints.EditGroupNameEndpoint)).Methods("PUT")
 
+	router.HandleFunc("/api/uploadfile", endpoints.ValidationMiddleware(endpoints.UploadFileEndpoint)).Methods("POST")
+	router.HandleFunc("/api/getuploads", endpoints.ValidationMiddleware(endpoints.GetUploadsEndpoint)).Methods("GET")
+
+	router.HandleFunc("/api/getallstudents", endpoints.ValidationMiddleware(endpoints.GetAllStudentsEndpoint)).Methods("GET")
+	router.HandleFunc("/api/addstudenttochat", endpoints.ValidationMiddleware(endpoints.AddMemberToGroupEndpoint)).Methods("PUT")
+
 	//log server running
 	log.Printf("server running on port %v", 12345)
 	log.Fatal(http.ListenAndServe(httpPort,router))

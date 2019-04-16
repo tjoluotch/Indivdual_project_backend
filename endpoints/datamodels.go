@@ -22,6 +22,15 @@ type Module struct {
 	CourseworkList []Coursework `bson:"cwks,omitempty" json:"cwks,omitempty"`
 }
 
+type Document struct {
+	Doc_ID string `bson:"doc_id,omitempty" json:"doc_id,omitempty"`
+	Url string `bson:"url,omitempty" json:"url,omitempty"`
+	Doc_Name string `bson:"doc_name,omitempty" json:"doc_name,omitempty"`
+	Can_View []string `bson:"can_view,omitempty" json:"can_view,omitempty"`
+	AWS_Bucket string `bson:"aws_bucket,omitempty" json:"aws_bucket,omitempty"`
+	AWS_Key string `bson:"aws_key,omitempty" json:"aws_key,omitempty"`
+}
+
 type Task struct {
 	Task_ID string `bson:"task_id,omitempty" json:"task_id,omitempty"`
 	Description string `bson:"task_description,omitempty" json:"task_description,omitempty"`
